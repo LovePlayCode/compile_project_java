@@ -119,6 +119,22 @@ public class Lexer {
                 v = v * 10 + Character.digit(peek, 10);
                 peek = (char) System.in.read();
             }while (Character.isDigit(peek));
+            
+            // 检查是否是浮点数
+            if(peek == '.') {
+                double floatValue = v;  // 整数部分
+                double decimal = 0.1;   // 小数位权重
+                peek = (char) System.in.read();
+                
+                // 读取小数部分
+                while(Character.isDigit(peek)) {
+                    floatValue += Character.digit(peek, 10) * decimal;
+                    decimal *= 0.1;
+                    peek = (char) System.in.read();
+                }
+                return new lexer.Float(floatValue);
+            }
+            
             return new Num(v);
         }
         if(Character.isLetter(peek)) {
