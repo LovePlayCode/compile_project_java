@@ -1,5 +1,4 @@
 import lexer.Lexer;
-import lexer.Token;
 import lexer.Num;
 import lexer.Word;
 import lexer.Tag;
@@ -12,7 +11,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         var lexer = new Lexer();
         var res = lexer.scan();
-
+ 
         // 改进打印方式，显示token的详细信息
         if (res instanceof Num) {
             Num num = (Num) res;
@@ -35,7 +34,22 @@ public class Main {
             }
             System.out.println(type + ": " + word.lexeme);
         } else {
-            System.out.println("字符: " + (char) res.tag);
+            // 处理关系运算符和单字符运算符的输出
+            String op;
+            if (res.tag == Tag.LE) {
+                op = "<=";
+            } else if (res.tag == Tag.GE) {
+                op = ">=";
+            } else if (res.tag == Tag.EQ) {
+                op = "==";
+            } else if (res.tag == Tag.NE) {
+                op = "!=";
+            } else if (res.tag == '<' || res.tag == '>' || res.tag == '=' || res.tag == '!') {
+                op = String.valueOf((char) res.tag);
+            } else {
+                op = String.valueOf((char) res.tag);
+            }
+            System.out.println("运算符/符号: " + op);
         }
     }
 }

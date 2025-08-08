@@ -6,7 +6,7 @@ import java.util.Hashtable;
 public class Lexer {
     public int line = 1;
     private char peek = ' ';
-    private Hashtable words = new Hashtable();
+    private Hashtable<String, Word> words = new Hashtable<>();
     void reserve(Word word) {
         words.put(word.lexeme, word);
     }
@@ -20,7 +20,7 @@ public class Lexer {
             for(;;peek = (char) System.in.read()) {
                 if(peek == ' ' || peek=='\t') continue;
                 else if (peek == '\n') {
-                    line = line + 1;    
+                    line = line + 1;
                 }else{
                     break;
                 }
@@ -61,11 +61,58 @@ public class Lexer {
                     return new Token('/');
                 }
             }
-            
+
+            // 识别关系运算符: <, <=, >, >=, ==, !=
+            if (peek == '<') {
+                char next = (char) System.in.read();
+                if (next == '=') {
+                    peek = ' ';
+                    return new Token(Tag.LE);
+                } else {
+                    // 单个 '<'，保留读到的下一个字符
+                    Token t = new Token('<');
+                    peek = ' ';
+                    return t;
+                }
+            }
+            if (peek == '>') {
+                char next = (char) System.in.read();
+                if (next == '=') {
+                    peek = ' ';
+                    return new Token(Tag.GE);
+                } else {
+                    Token t = new Token('>');
+                    peek = ' ';
+                    return t;
+                }
+            }
+            if (peek == '=') {
+                char next = (char) System.in.read();
+                if (next == '=') {
+                    peek = ' ';
+                    return new Token(Tag.EQ);
+                } else {
+                    Token t = new Token('=');
+                    peek = ' ';
+                    return t;
+                }
+            }
+            if (peek == '!') {
+                char next = (char) System.in.read();
+                if (next == '=') {
+                    peek = ' ';
+                    return new Token(Tag.NE);
+                } else {
+                    Token t = new Token('!');
+                    peek = ' ';
+                    return t;
+                }
+            }
+
             // 如果到这里，说明不是注释，跳出循环处理其他token
             break;
         }
-        
+
         if(Character.isDigit(peek)) {
             int v = 0;
             do{
@@ -81,7 +128,7 @@ public class Lexer {
                 peek = (char) System.in.read();
             }while (Character.isLetter(peek));
             String s = b.toString();
-            Word word = (Word) words.get(s);
+            Word word = words.get(s);
             if(word != null) {
                 return word;
             }
