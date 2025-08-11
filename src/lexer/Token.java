@@ -5,4 +5,7 @@ public class Token {
     public Token(int tag) {
         this.tag = tag;
     }
+    public String toString(){
+        return "" + (char)this.tag;
+    }
 }
