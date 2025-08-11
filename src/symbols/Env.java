@@ -2,6 +2,7 @@ package symbols;
 
 import java.util.Hashtable;
 
+import inter.Id;
 import lexer.Token;
 
 public class Env {
@@ -11,7 +12,7 @@ public class Env {
         table = new Hashtable<>();
         prev = n;
     }
-    public void put(Token w,Id i){
+    public void put(Token w, Id i){
         table.put(w, i);
     }
     public Id get(Token w){
