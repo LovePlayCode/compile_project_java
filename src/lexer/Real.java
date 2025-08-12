@@ -1,13 +1,14 @@
 package lexer;
 
-public class Real  extends Token{
+public class Real extends Token {
     public final float value;
-    public Real(float tag) {
+
+    public Real(float v) {
         super(Tag.REAL);
-        this.value = tag;
-        
+        value = v;
     }
-    public String toString(){
+
+    public String toString() {
         return "" + value;
     }
 }

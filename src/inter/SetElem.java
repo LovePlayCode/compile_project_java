@@ -3,7 +3,6 @@ package inter;
 import symbols.Array;
 import symbols.Type;
 
-// a[i] = 3
 public class SetElem extends Stmt {
     public Id array;
     public Expr index;
@@ -23,10 +22,8 @@ public class SetElem extends Stmt {
             return null;
         } else if (p1 == p2) {
             return p2;
-        } else if (Type.numeric(p1) && Type.numeric(p2)) {
-            return p2;
-        } else
-            return null;
+        } else if (Type.numeric(p1) && Type.numeric(p2)) return p2;
+        else return null;
     }
 
     public void gen(int b, int a) {

@@ -1,16 +1,16 @@
 package main;
 
-import lexer.Lexer;
-import parser.Parser;
+import java.io.*;
 
-import java.io.IOException;
+import lexer.*;
+import parser.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Lexer lexer = new Lexer();
-        Parser parser = new Parser(lexer);
-        parser.program();
+        // write your code here
+        Lexer lex = new Lexer();
+        Parser parse = new Parser(lex);
+        parse.program();
         System.out.write('\n');
     }
-
 }

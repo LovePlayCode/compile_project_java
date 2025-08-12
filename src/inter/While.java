@@ -2,28 +2,28 @@ package inter;
 
 import symbols.Type;
 
-public class While extends Stmt{
+public class While extends Stmt {
     Expr expr;
     Stmt stmt;
-    public While(){
+
+    public While() {
         expr = null;
         stmt = null;
     }
 
-    public void init(Expr x, Stmt s){
+    public void init(Expr x, Stmt s) {
         expr = x;
         stmt = s;
-        if(expr.type != Type.Bool){
+        if (expr.type != Type.Bool) {
             expr.error("boolean required in while");
         }
     }
 
-    public void gen(int b,int a){
+    public void gen(int b, int a) {
+        begin = b;
         after = a;
-        // 条件为真执行循环体(直接继续到后续代码)，条件为假跳出循环(跳到 after)
-        // 生成代码时，只需要"假时跳转到a(after)，真时不需要跳转，直接顺序落到循环体代码即可"
         expr.jumping(0, a);
-        int label = newLabel();
+        int label = newlabel();
         emitlabel(label);
         stmt.gen(label, b);
         emit("goto L" + b);
