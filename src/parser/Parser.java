@@ -2,24 +2,7 @@ package parser;
 
 import java.io.IOException;
 
-import inter.Access;
-import inter.And;
-import inter.Arith;
-import inter.Break;
-import inter.Constant;
-import inter.Do;
-import inter.Else;
-import inter.Expr;
-import inter.Id;
-import inter.If;
-import inter.Not;
-import inter.Or;
-import inter.Rel;
-import inter.Seq;
-import inter.SetElem;
-import inter.Stmt;
-import inter.Unary;
-import inter.While;
+import inter.*;
 import lexer.Lexer;
 import lexer.Num;
 import lexer.Tag;
@@ -58,7 +41,9 @@ public class Parser {
         Stmt s = block();
         int begin = s.newLabel();
         int after = s.newLabel();
-        s.emitlabel()
+        s.emitlabel(begin);
+        s.gen(begin,after);
+        s.emitlabel(after);
     }
 
     Stmt block() throws IOException{
@@ -66,6 +51,10 @@ public class Parser {
         Env savedEnv = top;
         top = new Env(top);
         decls();
+        Stmt s = stmts();
+        match('}');
+        top = savedEnv;
+        return s;
         
     }
 
@@ -178,7 +167,7 @@ public class Parser {
 
         if(look.tag == '='){
             move();
-            stmt = new SetElem(x, bool());
+            stmt = new Set(id, bool());
         }else{
             Access x = offset(id);
             match('=');
@@ -276,7 +265,7 @@ public class Parser {
                 move();
                 x = bool();
                 match(')');
-                break;
+                return x;
             case Tag.NUM:
                 x  = new Constant(look,Type.Int);
                 move();
@@ -308,6 +297,7 @@ public class Parser {
                 error("syntax error");
                 return x;
         }
+
     }
 
     Access offset(Id a)throws IOException{
