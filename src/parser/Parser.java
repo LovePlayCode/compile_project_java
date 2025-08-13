@@ -28,8 +28,10 @@ public class Parser {
     }
 
     void match(int t) throws IOException {
-        if (look.tag == t) move();
-        else error("syntax error");
+        if (look.tag == t)
+            move();
+        else
+            error("syntax error");
     }
 
     public void program() throws IOException {
@@ -79,8 +81,10 @@ public class Parser {
     Type type() throws IOException {
         Type p = (Type) look;
         match(Tag.BASIC);
-        if (look.tag != '[') return p;
-        else return dims(p);
+        if (look.tag != '[')
+            return p;
+        else
+            return dims(p);
     }
 
     Type dims(Type p) throws IOException {
@@ -95,9 +99,12 @@ public class Parser {
     }
 
     Stmt stmts() throws IOException {
-        if (look.tag == Tag.BASIC) decls();
-        if (look.tag == '}') return Stmt.Null;
-        else return new Seq(stmt(), stmts());
+        if (look.tag == Tag.BASIC)
+            decls();
+        if (look.tag == '}')
+            return Stmt.Null;
+        else
+            return new Seq(stmt(), stmts());
     }
 
     Stmt stmt() throws IOException {
@@ -114,7 +121,8 @@ public class Parser {
                 x = bool();
                 match(')');
                 s1 = stmt();
-                if (look.tag != Tag.ELSE) return new If(x, s1);
+                if (look.tag != Tag.ELSE)
+                    return new If(x, s1);
                 match(Tag.ELSE);
                 s2 = stmt();
                 return new Else(x, s1, s2);
@@ -164,7 +172,8 @@ public class Parser {
         Token t = look;
         match(Tag.ID);
         Id id = top.get(t);
-        if (id == null) error(t.toString() + " undeclared");
+        if (id == null)
+            error(t.toString() + " undeclared");
         if (look.tag == '=') {
             move();
             stmt = new Set(id, bool());
@@ -193,7 +202,6 @@ public class Parser {
             Token tok = look;
             move();
             x = new And(tok, x, equality());
-
         }
         return x;
     }
@@ -251,7 +259,8 @@ public class Parser {
             Token tok = look;
             move();
             return new Not(tok, unary());
-        } else return factor();
+        } else
+            return factor();
     }
 
     Expr factor() throws IOException {
@@ -281,11 +290,14 @@ public class Parser {
             case Tag.ID:
                 String s = look.toString();
                 Id id = top.get(look);
-                if (id == null) error(look.toString() + " undeclared");
+                if (id == null)
+                    error(look.toString() + " undeclared");
                 move();
-                if (look.tag != '[') return id;
-                else return offset(id);
-            default: //TODO 龙书这里怎么default跑到ID上面去了?
+                if (look.tag != '[')
+                    return id;
+                else
+                    return offset(id);
+            default: // TODO 龙书这里怎么default跑到ID上面去了?
                 error("syntax error");
                 return x;
         }
