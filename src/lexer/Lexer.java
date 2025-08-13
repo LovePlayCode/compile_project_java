@@ -91,7 +91,9 @@ public class Lexer {
             } while (Character.isLetterOrDigit(peek) || peek == '_');
             String s = b.toString();
             Word w = (Word) words.get(s);
-            if (w != null) return w;
+            if (w != null){
+                return w;
+            }
             w = new Word(s, Tag.ID);
             words.put(s, w);
             return w;

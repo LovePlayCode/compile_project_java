@@ -47,6 +47,7 @@ public class Parser {
         match('{');
         Env savedEnv = top;
         top = new Env(top);
+        // 最后这里实际上是一个抽象语法树 整个 stmts 都在构造抽象语法树
         Stmt s = stmts();
         match('}');
         top = savedEnv;
